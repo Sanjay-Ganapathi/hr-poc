@@ -32,7 +32,7 @@ export default function AIInput() {
                         <Textarea
 
                             value={value}
-                            placeholder="Search the web..."
+                            placeholder="Understand the universe.."
                             className="w-full rounded-xl px-4 py-3 bg-white/5 border-none text-white  placeholder:text-white/70 resize-none focus-visible:ring-0 leading-[1.2]"
                             ref={textareaRef}
                             onKeyDown={(e) => {
