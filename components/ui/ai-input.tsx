@@ -14,6 +14,7 @@ interface AIInputProps {
     handleInputChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
     handleSubmit: () => void;
     placeholder?: string;
+    className?: string;
 }
 
 export default function AIInput({
