@@ -37,7 +37,8 @@ export const Chat = () => {
                         <p className="text-zinc-400">How can I help you today?</p>
                     </div>
 
-                    <AIInput />
+                    <AIInput input={input} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+
                 </div>
             </main>
 
