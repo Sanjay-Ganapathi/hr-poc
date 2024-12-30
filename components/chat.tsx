@@ -95,8 +95,11 @@ export const Chat = () => {
                         <div className="flex-1 overflow-y-auto scrollbar-hide">
                             <div className="max-w-4xl mx-auto">
                                 {messages.map((message, index) => (
-                                    <div
+                                    <motion.div
                                         key={index}
+                                        initial={{ opacity: 0, y: 5, }}
+                                        animate={{ opacity: 1, y: 0, }}
+                                        transition={{ type: "spring", stiffness: 100 }}
                                         className={cn(
                                             "p-6 rounded-lg my-4",
                                             message.role === "user"
@@ -109,7 +112,7 @@ export const Chat = () => {
                                                 {message.content}
                                             </div>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                                 <div ref={messagesEndRef} />
                             </div>
