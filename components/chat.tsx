@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import AIInput from "@/components/ui/ai-input";
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Markdown } from "@/components/ui/markdown";
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -38,7 +39,7 @@ export const Chat = () => {
     }, [messages]);
 
     return (
-        <div className="h-screen bg-gradient-to-b from-black via-neutral-900 to-neutral-800 flex flex-col overflow-hidden">
+        <div className="h-screen bg-gradient-to-b from-black via-neutral-900 to-neutral-800 flex flex-col overflow-hidden ">
             <header className="shrink-0 p-4 border-b border-zinc-800">
                 <div className="flex items-center gap-2">
                     <span className="text-zinc-100 text-lg">HR POC</span>
@@ -86,13 +87,13 @@ export const Chat = () => {
 
                     <motion.main
                         key="chat"
-                        className="flex-1 flex flex-col overflow-hidden"
+                        className="flex-1 flex flex-col overflow-hidden px-1"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                     >
 
-                        <div className="flex-1 overflow-y-auto scrollbar-hide">
+                        <div className="flex-1 overflow-y-auto scrollbar-hide ">
                             <div className="max-w-4xl mx-auto">
                                 {messages.map((message, index) => (
                                     <motion.div
@@ -100,17 +101,19 @@ export const Chat = () => {
                                         initial={{ opacity: 0, y: 5, }}
                                         animate={{ opacity: 1, y: 0, }}
                                         transition={{ type: "spring", stiffness: 100 }}
+
                                         className={cn(
-                                            "p-6 rounded-lg my-4",
+                                            "p-6 my-4",
                                             message.role === "user"
-                                                ? "py-4 w-fit bg-zinc-800/50"
-                                                : "shadow-inne bg-neutral-900/50"
+                                                ? "rounded-lg py-4 w-fit bg-gradient-to-bl from-purple-900/90 to-purple-800/90 border border-purple-700/50 "
+                                                : "rounded-xl bg-gradient-to-br from-neutral-900/90 to-neutral-800/90 border border-neutral-700/50 transform hover:-translate-y-1 transition-all duration-300 ease-out before:bg-gradient-to-br before:from-neutral-500/5 before:to-neutral-800/5 before:transition-all before:duration-300 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_28px_-5px_rgba(0,0,0,0.4)] "
                                         )}
                                     >
-                                        <div className="max-w-4xl mx-auto">
-                                            <div className="text-zinc-200 whitespace-pre-wrap">
+                                        <div className="max-w-4xl mx-auto text-zinc-200 ">
+                                            {message.role === "assistant" ? (<Markdown content={message.content} />) : (<div className="whitespace-pre-wrap">
                                                 {message.content}
-                                            </div>
+                                            </div>)}
+
                                         </div>
                                     </motion.div>
                                 ))}
