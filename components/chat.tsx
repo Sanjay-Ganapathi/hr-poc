@@ -25,7 +25,9 @@ const springTransition = {
 };
 
 export const Chat = () => {
-    const { messages, input, handleInputChange, handleSubmit } = useChat();
+    const { messages, input, handleInputChange, handleSubmit } = useChat({
+        maxSteps: 3
+    });
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -53,9 +55,9 @@ export const Chat = () => {
                     <motion.main
                         key="initial"
                         className="flex-1 flex flex-col items-center justify-center"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
                         transition={springTransition}
                     >
                         <div className="max-w-xl w-full space-y-8 px-4">
@@ -110,9 +112,22 @@ export const Chat = () => {
                                         )}
                                     >
                                         <div className="max-w-4xl mx-auto text-zinc-200 ">
-                                            {message.role === "assistant" ? (<Markdown content={message.content} />) : (<div className="whitespace-pre-wrap">
-                                                {message.content}
-                                            </div>)}
+                                            {message.role === "assistant" ? (
+                                                message.toolInvocations ? (
+                                                    message.toolInvocations.map((t) =>
+                                                        t.toolName === "getWeather" && t.state === "result" ? (
+                                                            <div key={t.result}>
+                                                                {t.result}
+                                                            </div>
+                                                        ) : null)
+                                                ) : (
+                                                    <Markdown content={message.content} />
+                                                )
+                                            ) : (
+                                                <div className="whitespace-pre-wrap">
+                                                    {message.content}
+                                                </div>
+                                            )}
 
                                         </div>
                                     </motion.div>
