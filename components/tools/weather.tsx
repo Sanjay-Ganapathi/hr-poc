@@ -69,7 +69,7 @@ const LoadingSkeleton = () => {
 
 const WeatherCard = ({ isLoading = false, weatherData = null }: WeatherCardProps) => {
 
-    console.log(weatherData);
+
 
     if (!weatherData) {
         return null;

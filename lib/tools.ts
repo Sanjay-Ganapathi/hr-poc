@@ -29,12 +29,7 @@ const getWeather = tool({
             const data = await response.json();
             console.log(data)
 
-            return {
-                temperature: data.current.temp_c,
-                condition: data.current.condition.text,
-                humidity: data.current.humidity,
-                city
-            }
+            return data;
         }
 
         catch (e: any) {
