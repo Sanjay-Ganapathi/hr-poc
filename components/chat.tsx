@@ -7,6 +7,7 @@ import AIInput from "@/components/ui/ai-input";
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Markdown } from "@/components/ui/markdown";
+import WeatherCard from "./tools/weather";
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -114,7 +115,29 @@ export const Chat = () => {
                                         <div className="max-w-4xl mx-auto text-zinc-200 ">
                                             {message.role === "assistant" ? (
 
-                                                <Markdown content={message?.content} />
+
+                                                message.toolInvocations ? (
+
+                                                    message.toolInvocations.map((tool: any) => {
+
+                                                        const { toolName, toolCallId, state } = tool
+
+                                                        if (state === "result") {
+                                                            if (toolName === "getWeather") {
+                                                                return <WeatherCard key={toolCallId} isLoading={false} weatherData={tool.result} />
+                                                            } else {
+                                                                if (toolName === "getWeather") { return <WeatherCard key={toolCallId} isLoading={true} weatherData={null} /> }
+
+                                                            }
+                                                        }
+
+
+                                                    })
+
+                                                ) : (<Markdown content={message?.content} />)
+
+
+
                                             )
                                                 : (
                                                     <div className="whitespace-pre-wrap">
