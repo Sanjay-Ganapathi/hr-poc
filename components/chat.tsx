@@ -26,7 +26,7 @@ const springTransition = {
 
 export const Chat = () => {
     const { messages, input, handleInputChange, handleSubmit } = useChat({
-        maxSteps: 3
+        maxSteps: 5
     });
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -113,21 +113,14 @@ export const Chat = () => {
                                     >
                                         <div className="max-w-4xl mx-auto text-zinc-200 ">
                                             {message.role === "assistant" ? (
-                                                message.toolInvocations ? (
-                                                    message.toolInvocations.map((t) =>
-                                                        t.toolName === "getWeather" && t.state === "result" ? (
-                                                            <div key={t.result}>
-                                                                {t.result}
-                                                            </div>
-                                                        ) : null)
-                                                ) : (
-                                                    <Markdown content={message.content} />
-                                                )
-                                            ) : (
-                                                <div className="whitespace-pre-wrap">
-                                                    {message.content}
-                                                </div>
-                                            )}
+
+                                                <Markdown content={message?.content} />
+                                            )
+                                                : (
+                                                    <div className="whitespace-pre-wrap">
+                                                        {message.content}
+                                                    </div>
+                                                )}
 
                                         </div>
                                     </motion.div>
