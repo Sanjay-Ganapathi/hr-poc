@@ -125,6 +125,7 @@ export const Chat = () => {
                                                         if (state === "result") {
                                                             if (toolName === "getWeather") {
                                                                 return <WeatherCard key={toolCallId} isLoading={false} weatherData={tool.result} />
+                                                                // return <div key={toolCallId}>{JSON.stringify(tool.result)}</div>
                                                             } else {
                                                                 if (toolName === "getWeather") { return <WeatherCard key={toolCallId} isLoading={true} weatherData={null} /> }
 

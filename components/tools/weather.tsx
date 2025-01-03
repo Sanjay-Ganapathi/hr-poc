@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Cloud, Sun, CloudRain, Thermometer } from 'lucide-react';
+import { Cloud, Sun, CloudRain, Thermometer, AlertCircle } from 'lucide-react';
 
 
 interface WeatherResponse {
@@ -25,6 +25,19 @@ interface WeatherCardProps {
     isLoading?: boolean;
     weatherData: WeatherResponse | null;
 }
+
+const ErrorState = () => (
+    <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="max-w-sm mx-auto rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-red-900 to-red-800 p-6 text-white"
+    >
+        <div className="flex items-center justify-center space-x-3">
+            <AlertCircle className="w-6 h-6" />
+            <p className="text-lg">Unable to fetch weather data</p>
+        </div>
+    </motion.div>
+);
 
 const LoadingSkeleton = () => {
     return (
@@ -69,11 +82,15 @@ const LoadingSkeleton = () => {
 
 const WeatherCard = ({ isLoading = false, weatherData = null }: WeatherCardProps) => {
 
-
-
     if (!weatherData) {
-        return null;
+        return <ErrorState />;
     }
+
+    if ("Error" in weatherData) {
+        return <ErrorState />;
+    }
+
+
 
     if (isLoading) {
         return <LoadingSkeleton />;
