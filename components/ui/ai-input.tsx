@@ -17,12 +17,12 @@ interface AIInputProps {
     className?: string;
 }
 
-export default function AIInput({
+export const AIInput = ({
     input,
     handleInputChange,
     handleSubmit,
     placeholder = "Understand the universe.."
-}: AIInputProps) {
+}: AIInputProps) => {
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({
         minHeight: MIN_HEIGHT,
         maxHeight: MAX_HEIGHT,
