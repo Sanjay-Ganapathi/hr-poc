@@ -58,6 +58,6 @@ const config: Config = {
 			}
 		}
 	},
-	plugins: [import("tailwindcss-animate"), import('@tailwindcss/typography')],
+	plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography')],
 };
 export default config;

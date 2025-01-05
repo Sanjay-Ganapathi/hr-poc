@@ -30,7 +30,7 @@ const ErrorState = () => (
     <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="max-w-sm mx-auto rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-red-900 to-red-800 p-6 text-white"
+        className="max-w-sm rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-red-900 to-red-800 p-6 text-white"
     >
         <div className="flex items-center justify-center space-x-3">
             <AlertCircle className="w-6 h-6" />
@@ -41,7 +41,7 @@ const ErrorState = () => (
 
 const LoadingSkeleton = () => {
     return (
-        <div className="max-w-sm mx-auto rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-700">
+        <div className="max-w-sm rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-gray-700">
             <div className="p-6">
                 <div className="flex justify-between items-start">
                     <div className="space-y-2">
@@ -82,6 +82,10 @@ const LoadingSkeleton = () => {
 
 const WeatherCard = ({ isLoading = false, weatherData = null }: WeatherCardProps) => {
 
+    if (isLoading) {
+        return <LoadingSkeleton />;
+    }
+
     if (!weatherData) {
         return <ErrorState />;
     }
@@ -92,9 +96,7 @@ const WeatherCard = ({ isLoading = false, weatherData = null }: WeatherCardProps
 
 
 
-    if (isLoading) {
-        return <LoadingSkeleton />;
-    }
+
 
 
     const getBgColor = (temp: number) => {
@@ -120,7 +122,7 @@ const WeatherCard = ({ isLoading = false, weatherData = null }: WeatherCardProps
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, type: "spring" }}
-            className={`max-w-sm mx-auto rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br ${getBgColor(weatherData.current.temp_c)}`}
+            className={`max-w-sm rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br ${getBgColor(weatherData.current.temp_c)}`}
         >
             <div className="p-6 text-white">
                 <motion.div

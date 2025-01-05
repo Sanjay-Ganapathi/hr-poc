@@ -31,7 +31,7 @@ export const Messages = ({ messages, input, handleInputChange, handleSubmit }: M
     return (
         <motion.main
             key="chat"
-            className="flex-1 flex flex-col overflow-hidden px-1"
+            className="flex-1 flex flex-col overflow-hidden px-2 sm:px-1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}

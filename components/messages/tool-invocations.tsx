@@ -18,7 +18,7 @@ export const ToolInvocations = ({ toolInvocations }: ToolInvocationsProps) => {
                 const { toolName, toolCallId, state } = tool
 
 
-                if (toolName === "weather") {
+                if (toolName === "getWeather") {
                     return <WeatherCard key={toolCallId} isLoading={state !== "result"} weatherData={state === "result" ? tool.result : null} />
                 }
 
