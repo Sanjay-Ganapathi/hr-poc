@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import RadialPatternWithRadar from "@/components/radar";
 import { ShinyButton } from "@/components/ui/shiny-button";
 
@@ -9,7 +11,10 @@ export default function Home() {
     <div className="flex items-center justify-center h-screen bg-black flex-col gap-4">
       <RadialPatternWithRadar />
 
-      <ShinyButton text="Chat" />
+      <Link href="/chat" >
+        <ShinyButton text="Chat ✨" />
+      </Link>
+
 
     </div>
   );
