@@ -16,6 +16,8 @@ export const Chat = () => {
         maxSteps: 5,
     });
 
+    console.log(messages);
+
 
     return (
         <div className="h-screen bg-gradient-to-b from-black via-neutral-900 to-neutral-800 flex flex-col overflow-hidden ">

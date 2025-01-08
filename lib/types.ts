@@ -52,5 +52,24 @@ enum LeaveTypeCode {
     STUDY = 'SDY'
 }
 
+interface AttendanceRecord {
+    date: string;
+    checkIn: string | null;
+    checkOut: string | null;
+    duration: number | null;
+    status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'ON_LEAVE' | 'WFH';
+    isLate: boolean;
+    isEarlyDeparture: boolean;
+    employee: Employee;
+}
+interface AttendanceResponse {
+    d: {
+        results: AttendanceRecord[];
+        metadata: {
+            __count: string;
+        };
+    };
+}
+
 export { LeaveTypeCode };
-export type { LeaveBalance, LeaveBalanceResponse, LeaveTypeDefinition, LeaveEntitlements };
+export type { LeaveBalance, LeaveBalanceResponse, LeaveTypeDefinition, LeaveEntitlements, AttendanceRecord, AttendanceResponse };

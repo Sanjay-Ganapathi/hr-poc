@@ -1,6 +1,6 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import { LeaveBalanceResponse, LeaveBalance, LeaveEntitlements, LeaveTypeDefinition, LeaveTypeCode } from '@/lib/types';
+import { LeaveBalanceResponse, LeaveBalance, LeaveEntitlements, LeaveTypeDefinition, LeaveTypeCode, AttendanceResponse, AttendanceRecord } from '@/lib/types';
 
 const getWeather = tool({
     description: "Get the weather for a location",
@@ -210,13 +210,108 @@ const getLeaves = tool({
 
 
 
+const getAttendance = tool({
+    description: "Retrieves employee attendance records for a specified date range from SuccessFactors. Always use getCurrentTime tool to get the current date and time for accurate results.",
+    parameters: z.object({
+        employeeId: z.string().describe("The unique identifier of the employee"),
+        startDate: z.string().describe("Start date in YYYY-MM-DD format"),
+        endDate: z.string().describe("End date in YYYY-MM-DD format")
+    }),
+    execute: async ({ employeeId, startDate, endDate }): Promise<AttendanceResponse | { Error: string }> => {
+        try {
 
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 
+            if (daysDiff > 31) {
+                throw new Error("Date range cannot exceed 31 days");
+            }
+
+            const results: AttendanceRecord[] = [];
+            const currentDate = new Date(start);
+
+            // Generate attendance records for each day
+            while (currentDate <= end) {
+                const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
+                const randomStatus = Math.random();
+
+                let status: AttendanceRecord['status'];
+                let checkIn: string | null = null;
+                let checkOut: string | null = null;
+                let duration: number | null = null;
+
+                if (isWeekend) {
+                    status = 'ABSENT';
+                } else if (randomStatus < 0.7) { // 70% Present
+                    status = 'PRESENT';
+                    // Generate random check-in between 8 AM and 10 AM
+                    const checkInHour = 8 + Math.floor(Math.random() * 2);
+                    const checkInMinute = Math.floor(Math.random() * 60);
+                    checkIn = `${String(checkInHour).padStart(2, '0')}:${String(checkInMinute).padStart(2, '0')}`;
+
+                    // Generate random check-out between 4 PM and 7 PM
+                    const checkOutHour = 16 + Math.floor(Math.random() * 3);
+                    const checkOutMinute = Math.floor(Math.random() * 60);
+                    checkOut = `${String(checkOutHour).padStart(2, '0')}:${String(checkOutMinute).padStart(2, '0')}`;
+
+                    // Calculate duration in minutes
+                    duration = (checkOutHour - checkInHour) * 60 + (checkOutMinute - checkInMinute);
+                } else if (randomStatus < 0.8) { // 10% Half-day
+                    status = 'HALF_DAY';
+                    // Only morning check-in
+                    const checkInHour = 8 + Math.floor(Math.random() * 2);
+                    const checkInMinute = Math.floor(Math.random() * 60);
+                    checkIn = `${String(checkInHour).padStart(2, '0')}:${String(checkInMinute).padStart(2, '0')}`;
+                    checkOut = '13:00';
+                    duration = 240; // 4 hours
+                } else if (randomStatus < 0.9) { // 10% WFH
+                    status = 'WFH';
+                    // Regular timing for WFH
+                    checkIn = '09:00';
+                    checkOut = '17:00';
+                    duration = 480; // 8 hours
+                } else { // 10% Absent or On Leave
+                    status = Math.random() < 0.5 ? 'ABSENT' : 'ON_LEAVE';
+                }
+
+                results.push({
+                    date: currentDate.toISOString().split('T')[0],
+                    checkIn,
+                    checkOut,
+                    duration,
+                    status,
+                    isLate: checkIn ? parseInt(checkIn.split(':')[0]) >= 10 : false,
+                    isEarlyDeparture: checkOut ? parseInt(checkOut.split(':')[0]) <= 16 : false,
+                    employee: {
+                        userId: employeeId
+                    }
+                });
+
+                // Move to next day
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return {
+                d: {
+                    results,
+                    metadata: {
+                        __count: String(results.length)
+                    }
+                }
+            };
+        } catch (e: any) {
+            console.error(e);
+            return { Error: e.message };
+        }
+    }
+});
 
 
 export const tools = {
     getWeather,
     getCurrentTime,
-    getLeaves
+    getLeaves,
+    getAttendance
 
 }

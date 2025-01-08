@@ -28,6 +28,10 @@ export const ToolInvocations = ({ toolInvocations }: ToolInvocationsProps) => {
                     return <LeaveDashboard key={toolCallId} isLoading={state !== "result"} data={state === "result" ? tool.result : null} />
                 }
 
+                if (toolName === "getAttendance") {
+                    return <div key={toolCallId}>{JSON.stringify(tool.result, null, 2)}</div>
+                }
+
 
             })}
 

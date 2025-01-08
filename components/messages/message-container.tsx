@@ -35,9 +35,6 @@ export const MessageContainer = ({ message, index }: MessageContainerProps) => {
             </div>
 
 
-
-
-
         </motion.div>
     )
 }

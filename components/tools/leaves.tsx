@@ -168,7 +168,7 @@ export function LeaveDashboard({ data, isLoading }: { data: LeaveBalanceResponse
     )
 }
 
-const LeaveCard = motion(({ leave }: { leave: LeaveBalance }) => {
+const LeaveCard = motion.create(({ leave }: { leave: LeaveBalance }) => {
     const { total, used, pending, reserved, available } = leave.entitlements
     const progress = total ? (used / total) * 100 : 0
 
