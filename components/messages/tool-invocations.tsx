@@ -1,6 +1,7 @@
 import React from 'react'
 import WeatherCard from '@/components/tools/weather';
 import { LeaveDashboard } from '../tools/leaves';
+import WeeklyAttendanceCalendar from '../tools/attendance';
 
 interface ToolInvocationsProps {
 
@@ -29,7 +30,7 @@ export const ToolInvocations = ({ toolInvocations }: ToolInvocationsProps) => {
                 }
 
                 if (toolName === "getAttendance") {
-                    return <div key={toolCallId}>{JSON.stringify(tool.result, null, 2)}</div>
+                    return <WeeklyAttendanceCalendar key={toolCallId} isLoading={state !== "result"} data={state === "result" ? tool.result : null} />
                 }
 
 

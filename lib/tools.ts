@@ -220,6 +220,10 @@ const getAttendance = tool({
     execute: async ({ employeeId, startDate, endDate }): Promise<AttendanceResponse | { Error: string }> => {
         try {
 
+            console.log("employeeId", employeeId);
+            console.log("startDate", startDate);
+            console.log("endDate", endDate);
+
             const start = new Date(startDate);
             const end = new Date(endDate);
             const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
@@ -231,7 +235,7 @@ const getAttendance = tool({
             const results: AttendanceRecord[] = [];
             const currentDate = new Date(start);
 
-            // Generate attendance records for each day
+
             while (currentDate <= end) {
                 const isWeekend = currentDate.getDay() === 0 || currentDate.getDay() === 6;
                 const randomStatus = Math.random();
@@ -255,7 +259,7 @@ const getAttendance = tool({
                     const checkOutMinute = Math.floor(Math.random() * 60);
                     checkOut = `${String(checkOutHour).padStart(2, '0')}:${String(checkOutMinute).padStart(2, '0')}`;
 
-                    // Calculate duration in minutes
+
                     duration = (checkOutHour - checkInHour) * 60 + (checkOutMinute - checkInMinute);
                 } else if (randomStatus < 0.8) { // 10% Half-day
                     status = 'HALF_DAY';
@@ -282,13 +286,13 @@ const getAttendance = tool({
                     duration,
                     status,
                     isLate: checkIn ? parseInt(checkIn.split(':')[0]) >= 10 : false,
-                    isEarlyDeparture: checkOut ? parseInt(checkOut.split(':')[0]) <= 16 : false,
+                    isEarlyDeparture: checkOut ? parseInt(checkOut.split(':')[0]) < 16 : false,
                     employee: {
                         userId: employeeId
                     }
                 });
 
-                // Move to next day
+
                 currentDate.setDate(currentDate.getDate() + 1);
             }
 
