@@ -13,7 +13,7 @@ import { Header } from "@/components/header";
 
 export const Chat = () => {
     const { messages, input, handleInputChange, handleSubmit } = useChat({
-        maxSteps: 5
+        maxSteps: 5,
     });
 
 

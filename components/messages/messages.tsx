@@ -14,7 +14,6 @@ interface MessagesProps {
 }
 
 export const Messages = ({ messages, input, handleInputChange, handleSubmit }: MessagesProps) => {
-
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {

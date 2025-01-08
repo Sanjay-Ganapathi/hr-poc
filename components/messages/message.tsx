@@ -11,7 +11,7 @@ interface MessageProps {
 
 export const Message = ({ message }: MessageProps) => {
     if (message.role === "user") {
-        <div className="whitespace-pre-wrap">
+        return <div className="whitespace-pre-wrap">
             {message.content}
         </div>
     }
@@ -19,6 +19,7 @@ export const Message = ({ message }: MessageProps) => {
     if (message.toolInvocations) {
         return <ToolInvocations toolInvocations={message.toolInvocations} />
     }
+
 
 
     return <Markdown content={message.content} />

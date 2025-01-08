@@ -1,4 +1,4 @@
-import { streamText } from 'ai';
+import { streamText, smoothStream } from 'ai';
 import { azure } from '@/lib/aoi';
 import { tools } from '@/lib/tools';
 
@@ -12,7 +12,9 @@ export async function POST(req: Request) {
     const result = streamText({
         model: azure(process.env.AZURE_OPENAI_DEPLOYMENT_NAME!),
         messages,
-        tools
+        tools,
+        system: "You are an helpful assistant that answers questions for the users . You also have tools which you can use to provide answers to the users . But remember to summarize the result of tool in less than 10 words if any tool is called . No need for big explanation in case of tool call",
+        experimental_transform: smoothStream({ chunking: 'line' })
 
     })
 

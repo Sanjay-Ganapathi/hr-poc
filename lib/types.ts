@@ -51,3 +51,6 @@ enum LeaveTypeCode {
     UNPAID = 'UPAL',
     STUDY = 'SDY'
 }
+
+export { LeaveTypeCode };
+export type { LeaveBalance, LeaveBalanceResponse, LeaveTypeDefinition, LeaveEntitlements };

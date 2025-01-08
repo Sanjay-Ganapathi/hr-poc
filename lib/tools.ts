@@ -1,5 +1,6 @@
 import { tool } from 'ai';
 import { z } from 'zod';
+import { LeaveBalanceResponse, LeaveBalance, LeaveEntitlements, LeaveTypeDefinition, LeaveTypeCode } from '@/lib/types';
 
 const getWeather = tool({
     description: "Get the weather for a location",
@@ -55,6 +56,71 @@ const getCurrentTime = tool({
     }
 })
 
+function generateLeaveEntitlements(maxTotal: number, hasFixed = false): LeaveEntitlements {
+    const total = hasFixed ? maxTotal : Math.floor(Math.random() * maxTotal) + 1;
+    const used = Math.floor(Math.random() * (total * 0.8));
+    const pending = Math.floor(Math.random() * (total * 0.3));
+    const reserved = Math.floor(Math.random() * (total * 0.1));
+    const available = total - used - pending - reserved;
+
+    return {
+        total,
+        used,
+        pending,
+        reserved,
+        available: available > 0 ? available : 0
+    };
+}
+
+
+const allLeaveTypes: LeaveTypeDefinition[] = [
+    {
+        externalCode: LeaveTypeCode.ANNUAL,
+        timeAccountTypeName: "Annual Leave",
+        maxDays: 30,
+        isFixed: true
+    },
+    {
+        externalCode: LeaveTypeCode.SICK,
+        timeAccountTypeName: "Sick Leave",
+        maxDays: 14,
+        isFixed: true
+    },
+    {
+        externalCode: LeaveTypeCode.COMPENSATORY,
+        timeAccountTypeName: "Compensatory Leave",
+        maxDays: 5,
+        isFixed: false
+    },
+    {
+        externalCode: LeaveTypeCode.PATERNITY,
+        timeAccountTypeName: "Paternity Leave",
+        maxDays: 14,
+        isFixed: true
+    },
+    {
+        externalCode: LeaveTypeCode.COMPASSIONATE,
+        timeAccountTypeName: "Compassionate Leave",
+        maxDays: 5,
+        isFixed: true
+    },
+    {
+        externalCode: LeaveTypeCode.WORK_FROM_HOME,
+        timeAccountTypeName: "Work From Home",
+        unlimited: true
+    },
+    {
+        externalCode: LeaveTypeCode.UNPAID,
+        timeAccountTypeName: "Unpaid Leave",
+        unlimited: true
+    },
+    {
+        externalCode: LeaveTypeCode.STUDY,
+        timeAccountTypeName: "Study Leave",
+        maxDays: 5,
+        isFixed: false
+    }
+];
 
 const getLeaves = tool({
     description: "Retrieves leave balances and entitlements for an employee from SuccessFactors. Returns leave information including total, used, pending, and available balances for each leave type.",
@@ -77,72 +143,9 @@ const getLeaves = tool({
             "\nNote: Some leave types like WFH and UPAL are unlimited and won't show total/available balances.")
     }),
     execute: async ({ employeeId, leaveTypes }): Promise<LeaveBalanceResponse | { Error: string }> => {
-        // Helper function to generate random leave data
-        function generateLeaveEntitlements(maxTotal: number, hasFixed = false): LeaveEntitlements {
-            const total = hasFixed ? maxTotal : Math.floor(Math.random() * maxTotal) + 1;
-            const used = Math.floor(Math.random() * (total * 0.8));
-            const pending = Math.floor(Math.random() * (total * 0.3));
-            const reserved = Math.floor(Math.random() * (total * 0.1));
-            const available = total - used - pending - reserved;
 
-            return {
-                total,
-                used,
-                pending,
-                reserved,
-                available: available > 0 ? available : 0
-            };
-        }
-
-
-        const allLeaveTypes: LeaveTypeDefinition[] = [
-            {
-                externalCode: LeaveTypeCode.ANNUAL,
-                timeAccountTypeName: "Annual Leave",
-                maxDays: 30,
-                isFixed: true
-            },
-            {
-                externalCode: LeaveTypeCode.SICK,
-                timeAccountTypeName: "Sick Leave",
-                maxDays: 14,
-                isFixed: true
-            },
-            {
-                externalCode: LeaveTypeCode.COMPENSATORY,
-                timeAccountTypeName: "Compensatory Leave",
-                maxDays: 5,
-                isFixed: false
-            },
-            {
-                externalCode: LeaveTypeCode.PATERNITY,
-                timeAccountTypeName: "Paternity Leave",
-                maxDays: 14,
-                isFixed: true
-            },
-            {
-                externalCode: LeaveTypeCode.COMPASSIONATE,
-                timeAccountTypeName: "Compassionate Leave",
-                maxDays: 5,
-                isFixed: true
-            },
-            {
-                externalCode: LeaveTypeCode.WORK_FROM_HOME,
-                timeAccountTypeName: "Work From Home",
-                unlimited: true
-            },
-            {
-                externalCode: LeaveTypeCode.UNPAID,
-                timeAccountTypeName: "Unpaid Leave",
-                unlimited: true
-            },
-            {
-                externalCode: LeaveTypeCode.STUDY,
-                timeAccountTypeName: "Study Leave",
-                maxDays: 5,
-                isFixed: false
-            }
-        ];
+        console.log("employeeId", employeeId);
+        console.log("leaveTypes", leaveTypes);
 
         try {
             const currentDate = new Date();
@@ -188,13 +191,15 @@ const getLeaves = tool({
                 }
             });
 
+            console.log(results);
+
             return {
                 d: {
                     results,
                     metadata: {
                         __count: String(results.length)
                     }
-                }
+                },
             };
         } catch (e: any) {
             console.error(e);
