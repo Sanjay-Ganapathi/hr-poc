@@ -4,7 +4,8 @@ import { ToolInvocations } from '@/components/messages/tool-invocations'
 import { Markdown } from '@/components/ui/markdown'
 
 interface MessageProps {
-    message: any
+    message: any,
+
 }
 
 
@@ -15,6 +16,8 @@ export const Message = ({ message }: MessageProps) => {
             {message.content}
         </div>
     }
+
+
 
     if (message.toolInvocations) {
         return <ToolInvocations toolInvocations={message.toolInvocations} />

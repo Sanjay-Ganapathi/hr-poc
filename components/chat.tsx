@@ -12,7 +12,7 @@ import { Header } from "@/components/header";
 
 
 export const Chat = () => {
-    const { messages, input, handleInputChange, handleSubmit } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         maxSteps: 10,
     });
 
@@ -39,6 +39,7 @@ export const Chat = () => {
                         input={input}
                         handleInputChange={handleInputChange}
                         handleSubmit={handleSubmit}
+                        isLoading={isLoading}
 
                     />
                 )}

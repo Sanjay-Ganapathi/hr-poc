@@ -8,11 +8,14 @@ import { Message } from '@/components/messages/message';
 interface MessageContainerProps extends HTMLMotionProps<"div"> {
     message: any;
     index: number;
+    isLastMessage?: boolean;
 
 
 }
 
-export const MessageContainer = ({ message, index }: MessageContainerProps) => {
+export const MessageContainer = ({ message, index, isLastMessage }: MessageContainerProps) => {
+
+    const showLoading = isLastMessage && message.role === "assistant";
     return (
 
         <motion.div
@@ -28,10 +31,15 @@ export const MessageContainer = ({ message, index }: MessageContainerProps) => {
                     : "rounded-xl bg-gradient-to-br from-neutral-900/90 to-neutral-800/90 border border-neutral-700/50 transform hover:-translate-y-1 transition-all duration-300 ease-out before:bg-gradient-to-br before:from-neutral-500/5 before:to-neutral-800/5 before:transition-all before:duration-300 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_28px_-5px_rgba(0,0,0,0.4)] "
             )}
         >
-            <div className="max-w-4xl mx-auto text-zinc-200 ">
-                <Message message={message} />
-
-
+            <div className="max-w-4xl mx-auto text-zinc-200">
+                {showLoading ? (
+                    <div className="animate-pulse space-y-3">
+                        <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
+                        <div className="h-4 bg-neutral-800 rounded w-1/2"></div>
+                    </div>
+                ) : (
+                    <Message message={message} />
+                )}
             </div>
 
 

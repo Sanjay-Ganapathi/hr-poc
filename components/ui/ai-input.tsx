@@ -14,13 +14,16 @@ interface AIInputProps {
     handleInputChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
     handleSubmit: () => void;
     placeholder?: string;
+    isLoading?: boolean;
     className?: string;
+
 }
 
 export const AIInput = ({
     input,
     handleInputChange,
     handleSubmit,
+    isLoading = false,
     placeholder = "Understand the universe.."
 }: AIInputProps) => {
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({
@@ -54,6 +57,7 @@ export const AIInput = ({
                                     adjustHeight(true);
                                 }
                             }}
+                            disabled={isLoading}
                             onChange={(e) => {
                                 handleInputChange(e);
                                 adjustHeight();
@@ -70,6 +74,7 @@ export const AIInput = ({
                                     ? "bg-sky-500/15 text-sky-500"
                                     : "bg-white/5 text-white/40 hover:text-white"
                             )}
+                            disabled={isLoading}
                         >
                             <Send className="w-4 h-4" />
                         </button>

@@ -10,10 +10,11 @@ interface MessagesProps {
     input: string;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
     handleSubmit: () => void;
+    isLoading?: boolean;
 
 }
 
-export const Messages = ({ messages, input, handleInputChange, handleSubmit }: MessagesProps) => {
+export const Messages = ({ messages, input, handleInputChange, handleSubmit, isLoading }: MessagesProps) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -39,7 +40,7 @@ export const Messages = ({ messages, input, handleInputChange, handleSubmit }: M
             <div className="flex-1 overflow-y-auto scrollbar-hide ">
                 <div className="max-w-4xl mx-auto">
                     {messages.map((message, index) => (
-                        <MessageContainer key={index} message={message} index={index} />
+                        <MessageContainer key={index} message={message} index={index} isLastMessage={isLoading && index === messages.length - 1} />
                     ))}
                     <div ref={messagesEndRef} />
                 </div>
@@ -51,6 +52,7 @@ export const Messages = ({ messages, input, handleInputChange, handleSubmit }: M
                     input={input}
                     handleInputChange={handleInputChange}
                     handleSubmit={() => handleSubmit()}
+                    isLoading={isLoading}
                 />
             </div>
         </motion.main>

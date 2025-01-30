@@ -226,7 +226,7 @@ export default function WeeklyAttendanceCalendar({ data, isLoading }: { data: At
                                 size="sm"
                                 onClick={handlePreviousWeek}
                                 disabled={currentWeekIndex === 0}
-                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 disabled:opacity-50"
+                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 disabled:opacity-50 hover:text-white"
                             >
                                 <ChevronLeft className="h-4 w-4 mr-1" />
                                 Previous Week
@@ -236,7 +236,7 @@ export default function WeeklyAttendanceCalendar({ data, isLoading }: { data: At
                                 size="sm"
                                 onClick={handleNextWeek}
                                 disabled={currentWeekIndex === weeks.length - 1}
-                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 disabled:opacity-50"
+                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 disabled:opacity-50 hover:text-white"
                             >
                                 Next Week
                                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -330,7 +330,7 @@ export default function WeeklyAttendanceCalendar({ data, isLoading }: { data: At
                                                     (record.status === 'PRESENT' && !record.isLate && !record.isEarlyDeparture) ||
                                                     record.status === 'WFH'
                                                 }
-                                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 disabled:opacity-50"
+                                                className="bg-neutral-900/50 border-neutral-700/50 hover:bg-neutral-800/50 hover:text-white disabled:opacity-50"
                                             >
                                                 Regularize
                                             </Button>
