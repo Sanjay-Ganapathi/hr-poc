@@ -48,7 +48,7 @@ export const InitialInput = ({ input, handleInputChange, handleSubmit }: Initial
                     transition={{ delay: 0.2, ...springTransition }}
                 >
                     <h1 className={cn("text-2xl text-zinc-100", poppins.className)}>
-                        {getGreeting()}, Microlander. 👋
+                        {getGreeting()}, Human. 👋
                     </h1>
                     <p className="text-zinc-400">How can I help you today?</p>
                 </motion.div>
